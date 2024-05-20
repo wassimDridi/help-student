@@ -1,0 +1,430 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<title>Profile - {{user_profile.user.username}}</title>
+    
+    <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/color.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'favicon.png' %}" rel="icon" type="image/png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+
+</head>
+<body>
+    <center>
+        <br><br><br><br><br><br>
+
+
+
+
+
+    <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0" style="width: 50%; height: 100%;">
+        <div class="flex justify-between items-center px-4 py-3">
+            <div class="flex flex-1 items-center space-x-4">
+                <a href="/account/profile/{{post.post.user}}">
+                    <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-0.5 rounded-full">  
+                        <img src="{{post.profile_img.url}}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
+                    </div>
+                </a>
+                <span class="block capitalize font-semibold "><a href="/account/profile/{{post.post.post.user}}">{{post.post.user.username}}</a> </span>
+                <span class="block capitalize text-sm"> {{post.post.created_at}} </span>
+            </div>
+
+           <div >
+            <a href="/" >
+            <svg style="background-color: rgb(119, 104, 115); width: 30px; height: 30px; border-radius: 50%;" xmlns="http://www.w3.org/2000/svg" width="30" height="309" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+              </svg>
+            </a>
+           </div>
+
+         
+
+        </div>
+        <div class="p-3 border-b">
+            {{post.post.caption}}
+        </div>
+        <div uk-lightbox>
+            {% if post.post.image %}
+                <a href="{{post.post.image.url}}">  
+                    <center>
+                        <img src="{{post.post.image.url}}" alt="" width="99%">
+                    </center>
+                </a>
+            {% endif %}
+        </div>
+        
+
+        <div class="py-3 px-4 space-y-3"> 
+            <div class="flex space-x-4 lg:font-bold">
+                <a href="/account/like_post?post_id={{post.post.id}}" class="flex items-center space-x-2">
+                    <div class="p-2 rounded-full text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
+                            <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                        </svg>
+                    </div>
+                    
+                </a>
+                <a  class="flex items-center space-x-2">
+                    <div class="p-2 rounded-full text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
+                            <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+                        </svg>
+                        
+                    </div>
+                    
+
+                    {% if post.num_comments == 0 %}
+                        <strong>No comments</strong>
+                    {% elif post.num_comments == 1 %}
+                    {{post.num_comments}} <strong> comment</strong>
+                    {% else %}
+                    {{post.num_comments}} <strong> comments</strong>
+                    {% endif %}
+                </a>
+                <a href="/account/Reservation?post_id={{post.post.id}}" class="flex items-center space-x-2 flex-1 justify-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="25" height="25" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="currentColor"><path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/></g></svg>
+                </a>
+            </div>
+            <div class="flex items-center space-x-3"> 
+                {% if post.post.no_of_likes == 0 %}
+                
+                        <p>No likes</p>
+                {% elif post.post.no_of_likes == 1 %}
+                    {% for like_profile in post.fan_profile %}
+                        <div class="flex items-center">
+                            <img src="{{like_profile.profileimg.url}}" alt="" class="w-6 h-6 rounded-full border-2 border-white ">
+                        </div>
+                        <div class="">
+                            Liked <strong> {{like_profile.user.username}} </strong>
+                        </div>
+                    {% endfor %}
+                    
+                {% else %}
+                    <div class="flex items-center">
+                        {% for like_profile in post.fan_profile %}
+                        
+                            <img src="{{like_profile.profileimg.url}}" alt="" class="w-6 h-6 rounded-full border-2 border-white ">
+
+                        {% endfor %}
+                    </div>
+                    <div class="">
+                        Liked <strong> {% for like_profile in post.fan_profile %}
+                            {{like_profile.user.username}} <strong>-</strong>
+                        {% endfor %}</strong> and <strong> {{post.post.no_of_likes}} Others </strong>
+                    </div>
+                {% endif %}
+            </div>
+
+
+
+
+
+            
+
+
+
+            {% if post.post.type == "recommandation" %}
+            <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Recommandation</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ post.post.text }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+    
+            {% if post.post.type == "eventClub" %}
+            <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Event Club</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Intitule</th>
+                            <td>{{ post.post.intitule }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ post.post.description }}</td>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">Lieu</th>
+                            <td>{{ post.post.lieu }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contact Info</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"> Club</th>
+                            <td>{{ post.post.club }}</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+    
+            {% if post.post.type == "eventSocial" %}
+            <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Event Social</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Intitule</th>
+                            <td>{{ post.post.intitule }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ post.post.description }}</td>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">Lieu</th>
+                            <td>{{ post.post.lieu }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"> Contact Info</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"> Prix</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+    
+    
+            {% if post.post.type == "event" %}
+        <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Event</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Intitule</th>
+                            <td>{{ post.post.intitule }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ post.post.description }}</td>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">Lieu</th>
+                            <td>{{ post.post.lieu }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"> Contact Info</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+    
+    
+            {% if post.post.type == "transport" %}
+            <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Transport</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Depart</th>
+                            <td>{{ post.post.depart }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Destination</th>
+                            <td>{{ post.post.destination }}</td>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">Date depart</th>
+                            <td>{{ post.post.datedepart }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Heure depart</th>
+                            <td>{{ post.post.heureDep }}H</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">nomber Sieges</th>
+                            <td>{{ post.post.nbrSieges }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"> Contact Info</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+    
+            {% if post.post.type == "logement" %}
+       <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Logement</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Localisation</th>
+                            <td>{{ post.post.localisation }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Description</th>
+                            <td>{{ post.post.description }}</td>
+                        </tr>
+    
+                        <tr>
+                            <th scope="row">Contact Info</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+    
+    
+    
+            {% if post.post.type == "stage" %}
+          <div class="py-3 px-4 space-y-3">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Type</th>
+                            <td>Stage</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Societe</th>
+                            <td>{{ post.post.societe }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Duree</th>
+                            <td>{{ post.post.duree }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Sujet</th>
+                            <td>{{ post.post.sujet }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contact Info</th>
+                            <td>{{ post.post.contactInfo }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Specialite</th>
+                            <td>{{ post.post.specialite }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+    
+
+
+
+
+
+            <div class="border-t pt-4 space-y-4 ">
+                {% for comment in post.comments|slice:"-2:" %}
+                <div class="flex">
+                    <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                        <a href="/account/profile/{{comment.profile.user}}">
+                        <img src="{{comment.profile.profileimg.url}}" alt="{{comment.profile.user.username}}" class="absolute h-full rounded-full w-full">
+                    </a>
+                    </div>
+                    <span class="block capitalize font-semibold">  </span>
+                    
+                    <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 h-full relative lg:ml-5 ml-2 lg:mr-20   ">
+                        <p class="leading-6">{{comment.text}}   </p>
+                        <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 "></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
+               <!--  <form action="/account/addComment " method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{user_profile.user}}" name="user_comment" />
+                    <input type="hidden" value="{{post.post.id}}" name="post_comment" />
+                <input type="text" name="comment" placeholder="post a comment" class="bg-transparent max-h-10 shadow-none">
+                <div class="absolute bottom-0 flex h-full items-center right-0 right-3 text-xl space-x-2">
+                    <a href="#"> <button type="submit"> 
+                        <svg style="color: rgb(84, 3, 58);" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 512 512"><title>ionicons-v5-q</title><path d="M16,464,496,256,16,48V208l320,48L16,304Z" fill="#54033a"></path></svg>                                    </div>
+                </form> -->
+
+            </div>
+        </div>
+
+
+        
+
+    </div>
+
+
+
+        <br><br><br><br><br><br>
+</center>
+
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+    <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+
+
+
+	<script data-cfasync="false" src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script><script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+</body></html>

@@ -1,0 +1,180 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post</title>
+    <link rel="stylesheet" href="{% static 'css/addpost.css' %}">
+</head>
+<body>
+    <div class="parent">
+        <div class="child1">
+            <form action="{% url 'add_post' %}" method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <!-- <p class="my-3 leading-6"> Upload pics  <br> please upload her ..</p> -->
+                <div uk-form-custom>
+                    <input type="file" name="image_upload">
+                    <!-- <a href="#" class="button soft-warning small"> Choose file</a> -->
+                </div> <br>
+                <textarea class="button soft-warning small" name="caption" placeholder="caption..." ></textarea> <br> <br> <br>
+                <label for=""> type de Post</label>
+                <select name="postType" id="postType" required>
+                    <option value="post">Simple Post</option>
+                    <option value="Event">Evenement</option>
+                    <option value="EventClub">EventClub</option>
+                    <option value="EventSocial">EventSocial</option>
+                    <option value="Stage">Stage</option>
+                    <option value="Logement">Logement</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Recommandation">Recommandation</option>
+                </select>
+                
+                <div id="postForm">
+                    <!-- Form elements for each type of post -->
+                    <div id="Event" class="postForm" style="display: none;">
+                        <label for="">Intitule : </label>
+                        <input type="text" name="intitule"> <br>
+        
+                        <label for="">Descripion : </label>
+                        <input type="text" name="description"> <br>
+        
+                        <label for="">Lieu : </label>
+                        <input type="text" name="lieu"> <br>
+        
+                        <label for="">Contact Info </label>
+                        <input type="text" name="contactInfo" id=""> <br>
+                        
+                    </div>
+                    <div id="EventClub" class="postForm" style="display: none;">
+                        <h1>EventClub</h1>
+                        <label for="">Intitule : </label>
+                        <input type="text" name="intitule"> <br>
+        
+                        <label for="">Descripion : </label>
+                        <input type="text" name="description"> <br>
+        
+                        <label for="">Lieu : </label>
+                        <input type="text" name="lieu"> <br>
+        
+                        <label for="">Contact Info </label>
+                        <input type="text" name="contactInfo" id=""> <br>
+                        
+                        <label for="">Club : </label>
+                        <input type="text" name="club" id=""> <br>
+        
+                    </div>
+                    <div id="EventSocial" class="postForm" style="display: none;">
+                        <h1>EventSocial</h1>
+                        <label for="">Intitule : </label>
+                        <input type="text" name="intitule"> <br>
+        
+                        <label for="">Descripion : </label>
+                        <input type="text" name="description"> <br>
+        
+                        <label for="">Lieu : </label>
+                        <input type="text" name="lieu"> <br>
+        
+                        <label for="">Contact Info </label>
+                        <input type="text" name="contactInfo" id=""> <br>
+                        
+                        <label for=""> Prix : </label>
+                        <input type="number" name="prix">
+                    </div>
+                    <div id="Stage" class="postForm" style="display: none;">
+                        <h1>Stage</h1>
+                        <label for="">Type de Stage: </label>
+                        <select name="typestg" id="">
+                            <option value="1">Ouvrier</option>
+                            <option value="2">Technicien</option>
+                            <option value="2">PFE</option>
+                        </select> <br>
+                        <label for="">Societe :</label>
+                        <input type="text" name="societe"> <br>
+        
+                        <label for="">Duree: </label>
+                        <input type="number" name="duree"> <br>
+        
+                        <label for="">Sujet: </label>
+                        <input type="text" name="sujet" id=""> <br>
+        
+                        <label for="">Contact Info </label>
+                        <input type="text" name="contactInfo" id=""> <br>
+        
+                        <label for="">Specialite</label>
+                        <input type="text" name="specialite">
+        
+        
+                    </div>
+                    <div id="Logement" class="postForm" style="display: none;">
+                        <h1>Logement</h1> 
+                        <label for="">Localisation</label>
+                        <input type="text" name="localisation" id="">  <br>
+                        <label for="">Descripion</label>
+                        <input type="text" name="description" id="">  <br>
+                        <label for="">Contact Info</label>
+                        <input type="text" name="contactInfo" id="">  <br> 
+                    </div>
+                    <div id="Transport" class="postForm" style="display: none;">
+                        <h1>Transport</h1>
+                        <label for="">Depart</label>
+                        <input type="text" name="depart" id="">  <br>
+                        <label for="">Destination</label>
+                        <input type="text" name="destination" id="">  <br>
+
+                        <label for="">date depart</label>
+                        <input type="date" name="datedepart"> <br>
+
+                        <label for="">Heure Depart</label>
+                        <input type="number" name="heureDepart"><br>
+        
+                        <label for="">Nombre sieges </label>
+                        <input type="number" name="nbrSieges" id=""><br>
+        
+                        <label for="">Contact Info</label>
+                        <input type="text" name="contactInfo" id="">  <br>
+                        
+                    </div>
+                    <div id="Recommandation" class="postForm" style="display: none;">
+                        <h1>Recommandation</h1>
+                        <label for="">Text</label>
+                        <input type="text" name="text" id="">  <br>            
+                    </div>
+                </div>
+                    <br>
+                <button class="button bg-blue-700" type="submit" >ADD</button>
+                
+            </form>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Get the select element
+        var postTypeSelect = document.getElementById("postType");
+    
+        // Get all the post form elements
+        var postForms = document.querySelectorAll(".postForm");
+    
+        // Function to show/hide form elements based on selected option
+        function showSelectedForm() {
+            var selectedOption = postTypeSelect.value;
+            postForms.forEach(function(form) {
+                if (form.id === selectedOption) {
+                    form.style.display = "block";
+                } else {
+                    form.style.display = "none";
+                }
+            });
+        }
+    
+        // Add event listener for change event on the select element
+        postTypeSelect.addEventListener("change", showSelectedForm);
+    
+        // Show the selected form initially
+        showSelectedForm();
+    </script>
+</body>
+</html>

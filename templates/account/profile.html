@@ -1,0 +1,380 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<title>Profile - {{user_profile.user.username}}</title>
+   <!-- <link rel="icon" href="images/fav.png" type="image/png" sizes="16x16"> -->
+    
+    <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/color.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'favicon.png' %}" rel="icon" type="image/png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+
+</head>
+<body>
+<!--<div class="se-pre-con"></div>-->
+<div class="theme-layout">
+	
+	</div>
+	
+	<section>
+			<div class="feature-photo">
+				<figure><img src="{% static 'images/resources/timeline-1.jpg' %}" alt=""></figure>
+				<form action="/account/Follow_user " method="POST">
+					{% csrf_token %}
+					<div class="add-btn">
+					<span style="color: white; font-size: 27px; margin-right: 52px;"><b><u><a href="/account/">Home</a></u></b></span>
+					
+					{% if user_post_length == 0 %}
+					<span style="color: white; font-size: 27px;"><b>No Post</b></span>
+					{% elif user_post_length == 1 %}
+					<span style="color: white; font-size: 27px;"><b>{{user_post_length}} Post</b></span>
+					{% else %}
+					<span style="color: white; font-size: 27px;"><b>{{user_post_length}} Posts</b></span>
+					{% endif %}
+
+					{% if user_followers == 0 or user_followers == 1 %}
+					<span style="color: white; font-size: 27px;"><b>{{user_followers}} follower</b></span>
+					{% else %}
+					<span style="color: white; font-size: 27px;"><b>{{user_followers}} followers</b></span>
+					{% endif %}
+
+
+					<span style="color: white; font-size: 27px;"><b>{{user_following}} following</b></span>
+
+					<input type="hidden" value="{{user}}" name="follower" />
+					<input type="hidden" value="{{user_object}}" name="user" />
+
+					{% if user_object.username == user.username %}
+					<a href="/account/settings/" data-ripple="">Account Settings</a>
+					{% else %}
+					<a data-ripple=""><button type="submit" style="background-color: #ffc0cb; border: #ffc0cb;">{{button_text}}</button></a>
+					{% endif %}
+
+					</div>
+				</form>
+
+				<!-- <form class="edit-phto">
+					<i class="fa fa-camera-retro"></i>
+					<label class="fileContainer">
+						Upload Cover Photo
+					<input type="file"/>
+					</label>
+				</form> -->
+				<div class="container-fluid">
+					<div class="row merged">
+						<div class="col-lg-2 col-sm-3">
+							<div class="user-avatar">
+								<figure>
+									<img src="{{user_profile.profileimg.url}}" style="height: 250px; width: 100%; " alt="">
+									
+									{% if user_object.username == user.username %}
+									<form class="edit-phto" action="/account/edit_photo_profile" enctype="multipart/form-data" method="POST">
+										{% csrf_token %}
+										<i class="fa fa-camera-retro"></i>
+										<label class="fileContainer">
+											<input type="file" name="image_profile">
+											<input type="submit"style="display: none;" id="submitButton" />Upload Profile Photo
+										</label>
+										
+									</form>
+									<script>
+										// Sélectionner l'élément input de type fichier
+											const fileInput = document.querySelector('input[name="image_profile"]');
+
+											// Sélectionner le bouton de soumission
+											const submitButton = document.getElementById('submitButton');
+
+											// Ajouter un écouteur d'événements pour le changement de la valeur du champ d'entrée de fichier
+											fileInput.addEventListener('change', () => {
+												// Cliquer sur le bouton de soumission
+												submitButton.click();
+											});
+
+									</script>
+									{% endif %}
+								</figure>
+							</div>
+						</div>
+						<div class="col-lg-10 col-sm-9">
+							<div class="timeline-info">
+								<ul>
+									<li class="admin-name">
+									  <h5 style="color: black;white-space: nowrap; width: 110px; font-size: 27px;"><b>@{{user_profile.user.username}} </b><!--<i class="fa fa-check-circle" style="color: #48dbfb;" aria-hidden="true"></i>--></h5>
+									  <!--<span>Group Admin</span>-->
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- top area -->
+		<section>
+			<div class="bio">
+				{{user_profile.bio}}
+			</div>
+		</section>
+		
+
+	<section>
+		<div class="gap gray-bg">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row" id="page-contents">
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									<center>
+										{% if user_object.username == user.username %}
+														<h1>Reservation List</h1>
+														<ul>
+															{% for reservation in reservations %}
+															<li>
+																{{ reservation }} <!-- you can djeber afficher attribute in object as you like -->
+																 <br>
+																{{ reservation.user.username }} <!-- this is exemple  -->
+																{% if not reservation.confirmed %}
+																<form action="{% url 'confirm_reservation'%}" method="POST">
+																	{% csrf_token %}
+																	<input type="hidden" value="{{reservation.id}}" name="reservation_id">
+							
+																	<button type="submit">Confirm</button>
+																</form>
+																{% else %}
+																<h1>Confirmed</h1>
+																{% endif %}
+															</li>
+															<hr>
+															{% endfor %}
+														</ul>
+										{% endif %}
+										</center>
+								</aside>
+							</div><!-- sidebar -->
+							
+							
+
+
+
+
+
+
+
+
+							<div class="col-lg-6">
+								{% for post in posts_all reversed %}
+
+                        <!-- post 1-->
+                        <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0">
+    
+                            <!-- post header-->
+                            <div class="flex justify-between items-center px-4 py-3">
+                                <div class="flex flex-1 items-center space-x-4">
+                                    <a href="#">
+                                        <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-0.5 rounded-full">  
+                                            <img src="{{post.profile_img}}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
+                                        </div>
+                                    </a>
+                                    <span class="block capitalize font-semibold ">{{post.post.post.user.username}} </span>
+                                </div>
+								{% if user_object.username == user.username %}
+								<div>
+									<a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 "></i> </a>
+									<div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100  " uk-drop="mode: hover;pos: top-right">
+								  
+										<ul class="space-y-1">
+										
+											
+											   <form  action="/account/PostDelete" method="POST">
+												   {% csrf_token %}
+												   <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md ">
+													   <input type="hidden" value="{{post.post.post.id}}" name="idPostDelete">
+													   <input type="submit" id="" value="Delete" />
+												   </a>
+											   </form>
+											   <form  action="/account/PostDetails" method="POST">
+												{% csrf_token %}
+												
+													<input type="hidden" value="{{post.post.post.id}}" name="idPostDetails">
+													<input type="submit"  value="Details" />
+												</form>
+												 
+										   </ul>
+									
+									</div>
+								</div>								
+								{% endif %}
+                            </div>
+                            <div class="p-3 border-b">
+
+                                {{post.post.post.caption}}
+                            </div>
+                            <div uk-lightbox>
+                                {% if post.post.post.image %}
+                                    <a href="{{post.post.post.image.url}}">  
+                                        <center>
+                                            <img src="{{post.post.post.image.url}}" alt="" width="99%">
+                                        </center>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            
+    
+                            <div class="py-3 px-4 space-y-3"> 
+                               <!-- like svg button -->
+                                <div class="flex space-x-4 lg:font-bold">
+                                    <a href="/account/like_post?post_id={{post.post.post.id}}" class="flex items-center space-x-2">
+                                        <div class="p-2 rounded-full text-black">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
+                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                                            </svg>
+                                        </div>
+                                        
+                                    </a>
+                                    <a href="#" class="flex items-center space-x-2">
+                                        <div class="p-2 rounded-full text-black">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
+                                                <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        
+										{% if post.post.num_comments == 0 %}
+                                            <strong>No comments</strong>
+                                        {% elif post.post.num_comments == 1 %}
+                                        {{post.post.num_comments}} <strong> comment</strong>
+                                        {% else %}
+                                        {{post.post.num_comments}} <strong> comments</strong>
+                                        {% endif %}
+                                    </a>
+									<a href="/account/Reservation?post_id={{post.post.post.id}}" class="flex items-center space-x-2 flex-1 justify-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="25" height="25" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g fill="currentColor"><path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/></g></svg>
+                                    </a>
+                                </div>
+                                <!-- user liked and number and images -->
+                                <div class="flex items-center space-x-3"> 
+                                    {% if post.post.post.no_of_likes == 0 %}
+                                            <p>No likes</p>
+                                    {% elif post.post.post.no_of_likes == 1 %}
+                                        {% for like_profile in post.post.fan_profile %}
+                                            <div class="flex items-center">
+                                                <img src="{{like_profile.profileimg.url}}" alt="" class="w-6 h-6 rounded-full border-2 border-white ">
+                                            </div>
+                                            <div class="">
+                                                Liked <strong> {{like_profile.user.username}} </strong>
+                                            </div>
+                                        {% endfor %}
+                                        
+                                    {% else %}
+                                        <div class="flex items-center">
+                                            {% for like_profile in post.post.fan_profile %}
+                                            
+                                                <img src="{{like_profile.profileimg.url}}" alt="" class="w-6 h-6 rounded-full border-2 border-white ">
+
+                                            {% endfor %}
+                                        </div>
+                                        <div class="">
+                                            Liked <strong> {% for like_profile in post.post.fan_profile %}
+                                                {{like_profile.user.username}} <strong>-</strong>
+                                            {% endfor %}</strong> and <strong> {{post.post.post.no_of_likes}} Others </strong>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    
+                                </div>
+                                <!-- <div class="flex items-center space-x-3"> 
+                                    <div class="flex items-center">
+                                        <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="" class="w-6 h-6 rounded-full border-2 border-white ">
+                                        <img src="{% static 'assets/images/avatars/avatar-4.jpg' %}" alt="" class="w-6 h-6 rounded-full border-2 border-white  -ml-2">
+                                        <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" alt="" class="w-6 h-6 rounded-full border-2 border-white  -ml-2">
+                                    </div>
+                                    <div class="">
+                                        Liked <strong> taiye</strong> and <strong> 209 Others </strong>
+                                    </div>
+                                </div> -->
+
+                                <div class="border-t pt-4 space-y-4 ">
+									{% for comment in post.post.comments|slice:"-2:" %}
+                                    <div class="flex">
+                                        <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                                            <a href="/account/profile/{{comment.profile.user}}">
+                                            <img src="{{comment.profile.profileimg.url}}" alt="{{comment.profile.user.username}}" class="absolute h-full rounded-full w-full">
+                                        </a>
+                                        </div>
+                                        <span class="block capitalize font-semibold"> </span>
+                                        
+                                        <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 h-full relative lg:ml-5 ml-2 lg:mr-20   ">
+                                            <p class="leading-6">{{comment.text}}   </p>
+                                            <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 "></div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+									<div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
+										<form action="/account/addComment " method="POST">
+											{% csrf_token %}
+											<input type="hidden" value="{{user_profile.user}}" name="user_comment" />
+											<input type="hidden" value="{{post.post.post.id}}" name="post_comment" />
+										<input type="text" name="comment" placeholder="post a comment" class="bg-transparent max-h-10 shadow-none">
+										<div class="absolute bottom-0 flex h-full items-center right-0 right-3 text-xl space-x-2">
+											<a href="#"> <button type="submit"> 
+												<svg style="color: rgb(84, 3, 58);" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 512 512"><title>ionicons-v5-q</title><path d="M16,464,496,256,16,48V208l320,48L16,304Z" fill="#54033a"></path></svg>                                    </div>
+										</form>
+	
+									</div>
+                                </div>
+
+                               
+    
+                            </div>
+    
+                        </div>
+                        {% endfor %}
+							</div><!-- centerl meta -->
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+								
+								</aside>
+							</div><!-- sidebar -->
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>	
+	</section>
+
+	
+	<script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+    <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+
+
+
+	<script data-cfasync="false" src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script><script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+
+</body>	
+
+
+</html>
